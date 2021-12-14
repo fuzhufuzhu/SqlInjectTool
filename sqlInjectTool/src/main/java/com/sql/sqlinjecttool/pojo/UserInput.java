@@ -21,6 +21,8 @@ public class UserInput {
     private  StringBuffer html;
     private List parm;
     private int parmNum;
+    private long startTimeStamp;
+    private long endTimeStamp;
 
 
     public UserInput(String input) throws IOException {
@@ -34,10 +36,13 @@ public class UserInput {
         this.setParmNum(paramList.size());
 
         //存储返回包
+        this.setStartTimeStamp(System.currentTimeMillis());
         HttpURLConnection connection=HttpSend.sendHttpRequest(input,"GET");
 
         //获取响应包并保存
         InputStream inputStream=(InputStream)connection.getContent();
+        this.setEndTimeStamp(System.currentTimeMillis());
+
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         StringBuffer stringBuffer =new StringBuffer();
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -92,5 +97,21 @@ public class UserInput {
 
     private void setParmNum(int parmNum) {
         this.parmNum = parmNum;
+    }
+
+    public long getStartTimeStamp() {
+        return startTimeStamp;
+    }
+
+    public void setStartTimeStamp(long startTimeStamp) {
+        this.startTimeStamp = startTimeStamp;
+    }
+
+    public long getEndTimeStamp() {
+        return endTimeStamp;
+    }
+
+    public void setEndTimeStamp(long endTimeStamp) {
+        this.endTimeStamp = endTimeStamp;
     }
 }
