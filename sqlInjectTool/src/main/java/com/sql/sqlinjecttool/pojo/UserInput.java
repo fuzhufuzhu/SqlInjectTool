@@ -2,12 +2,11 @@ package com.sql.sqlinjecttool.pojo;
 
 import com.sql.sqlinjecttool.paramOperation.ParamOperation;
 import com.sql.sqlinjecttool.util.HttpSend;
+import com.sql.sqlinjecttool.util.Post;
+import javafx.geometry.Pos;
 import sun.misc.BASE64Encoder;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,7 +23,7 @@ public class UserInput {
     private long startTimeStamp;
     private long endTimeStamp;
 
-
+    //GET型对象
     public UserInput(String input) throws IOException {
         URL url = new URL(input);
         this.setUrl(input);
@@ -56,6 +55,39 @@ public class UserInput {
         this.setHtml(stringBuffer);
         this.setHtmlLength(connection.getContentLength());
     }
+    //post型对象
+    public UserInput () throws IOException {
+        Post post1 = new Post();
+        post1.CollectPost("/home/test/1.txt");
+        post1.getHashMap();
+        System.out.println(post1.getUrl());
+        HttpURLConnection connection = HttpSend.sendHttpRequest(post1.getUrl(),"POST");
+        InputStream inputStream=(InputStream)connection.getContent();
+        this.setEndTimeStamp(System.currentTimeMillis());
+
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        StringBuffer stringBuffer =new StringBuffer();
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        String temp = null;
+        while ((temp=bufferedReader.readLine())!=null){
+            stringBuffer.append(temp);
+        }
+        inputStream.close();
+        inputStreamReader.close();
+        bufferedReader.close();
+        this.setHtml(stringBuffer);
+        this.setHtmlLength(connection.getContentLength());
+    }
+
+    public static void main(String[] args) throws IOException {
+        UserInput userInput = new UserInput();
+        System.out.println(userInput.getHtmlLength());
+
+    }
+
+
+
+
 
 
     public String getUrl() {

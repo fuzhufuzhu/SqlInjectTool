@@ -7,22 +7,43 @@ import com.sql.sqlinjecttool.payload.SleepPayload;
 import com.sql.sqlinjecttool.pojo.UserInput;
 import com.sql.sqlinjecttool.util.HttpSend;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
         public static void main(String[] args) throws IOException {
 
-            String input = "http://127.0.0.1/sqli-labs/Less-5/?id=2";
+
             //设置一个按钮，用于开关检测 0代表检测开启 1代表关闭
             int button = 0;
+            String input = "";
+
+            //收集用户输入
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("是否为Post型注入,输入Y/N");
+           String in= scanner.nextLine();
+
+           if(in.equals("y")||in.equals("Y")){
+               System.out.println("输入数据包位置");
+               String path = scanner.nextLine();
+               File file = new File(path);
+
+
+
+               System.out.println(path);
+
+           }else if(in.equals("n")||in.equals("N")){
+                System.out.println("输入要注入的url");
+                input = scanner.nextLine();
+            }else {
+               System.out.println("非法输入");
+               return;
+           }
 
             UserInput correctInput = new UserInput(input);
             System.out.println("首次收集数据包完毕");
@@ -31,6 +52,10 @@ public class Main {
             ParamOperation paramOperation = new ParamOperation();
             Judge judge = new Judge();
             for(int i =0;i<BooleanPayload.booleanFalesPayload.size();i++){
+                //开关
+                if(button==1){
+                    System.out.println("跳过布尔型注入");
+                    break;}
                 String falesPayload = paramOperation.Connect(0,correctInput,BooleanPayload.booleanFalesPayload.get(i).toString());
                 String turePayload = paramOperation.Connect(0,correctInput,BooleanPayload.booleanTurePayload.get(i).toString());
                 //new 两个对象将结果进行保存 用于今后比对
@@ -50,9 +75,13 @@ public class Main {
             System.out.println("开始延时注入");}{
                 System.out.println("开始跑数据");
             }
-            button=0;
-            for(int i =0;i< SleepPayload.sleepPayload.size();i++){
 
+
+            for(int i =0;i< SleepPayload.sleepPayload.size();i++){
+                if(button==1){
+                    System.out.println("跳过延时注入");
+                    break;
+                }
 
                 String sleepPayload = paramOperation.Connect(0,correctInput,SleepPayload.sleepPayload.get(i).toString());
                 UserInput sleepPayloadInput =  new UserInput(sleepPayload);
