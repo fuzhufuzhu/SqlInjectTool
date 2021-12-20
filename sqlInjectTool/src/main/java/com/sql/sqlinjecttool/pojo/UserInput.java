@@ -2,7 +2,7 @@ package com.sql.sqlinjecttool.pojo;
 
 import com.sql.sqlinjecttool.paramOperation.ParamOperation;
 import com.sql.sqlinjecttool.util.HttpSend;
-import com.sql.sqlinjecttool.util.Post;
+import com.sql.sqlinjecttool.util.ResolvingPost;
 import javafx.geometry.Pos;
 import sun.misc.BASE64Encoder;
 
@@ -10,11 +10,14 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
-public class UserInput {
+public class UserInput implements Cloneable{
     private String url ;
     private int htmlLength;
     private  StringBuffer html;
@@ -22,17 +25,22 @@ public class UserInput {
     private int parmNum;
     private long startTimeStamp;
     private long endTimeStamp;
+    private String type ;
+    private String frontPart;
 
     //GET型对象
     public UserInput(String input) throws IOException {
         URL url = new URL(input);
         this.setUrl(input);
+
+        this.frontPart = url.getProtocol()+"://"+url.getHost()+url.getPath()+"?";
         String param=url.getQuery();
         //获取url中的参数 以list save
         ParamOperation paramOperation = new ParamOperation();
         List<List>paramList =paramOperation.Collect(param);
         this.setParm(paramList);
         this.setParmNum(paramList.size());
+        System.out.println("尝试请求"+ (input));
 
         //存储返回包
         this.setStartTimeStamp(System.currentTimeMillis());
@@ -54,16 +62,39 @@ public class UserInput {
         bufferedReader.close();
         this.setHtml(stringBuffer);
         this.setHtmlLength(connection.getContentLength());
+        this.type = "GET";
+
     }
+
+        //在该出设置一个读取好的数据包 post型的构造方法就是读取已经解析过的数据包
+        //
     //post型对象
-    public UserInput () throws IOException {
-        Post post1 = new Post();
-        post1.CollectPost("/home/test/1.txt");
-        post1.getHashMap();
-        System.out.println(post1.getUrl());
-        HttpURLConnection connection = HttpSend.sendHttpRequest(post1.getUrl(),"POST");
+    public UserInput (ResolvingPost resolvingPost,String method) throws IOException {
+
+       HashMap postHashMap=resolvingPost.getHashMap();
+        HttpURLConnection connection = HttpSend.sendHttpRequest(resolvingPost.getUrl(),"POST");
+        connection.setDoOutput(true);
+        Iterator iterator = postHashMap.keySet().iterator();
+        while (iterator.hasNext()){
+            Object key = iterator.next();
+            Object value = postHashMap.get(key);
+            connection.setRequestProperty((String) key,(String) value);
+        }
+        connection.connect();
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
+        writer.write(resolvingPost.getBody());
+        writer.flush();
+        System.out.println("尝试payload:"+resolvingPost.getBody());
+        this.setStartTimeStamp(System.currentTimeMillis());
+
         InputStream inputStream=(InputStream)connection.getContent();
         this.setEndTimeStamp(System.currentTimeMillis());
+
+        //获取body中的数组
+        ParamOperation paramOperation = new ParamOperation();
+        List<List>paramList =paramOperation.Collect(resolvingPost.getBody());
+        this.setParm(paramList);
+        this.setParmNum(paramList.size());
 
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         StringBuffer stringBuffer =new StringBuffer();
@@ -74,22 +105,31 @@ public class UserInput {
         }
         inputStream.close();
         inputStreamReader.close();
+
+     //   System.out.println(this.getParm());
+
         bufferedReader.close();
         this.setHtml(stringBuffer);
         this.setHtmlLength(connection.getContentLength());
+        this.type="POST";
+    }
+    @Override
+    public Object clone(){
+        UserInput userInput = null;
+        try {
+            userInput=(UserInput)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return userInput;
+
     }
 
     public static void main(String[] args) throws IOException {
-        UserInput userInput = new UserInput();
-        System.out.println(userInput.getHtmlLength());
+//        UserInput userInput = new UserInput();
+//        System.out.println(userInput.getHtmlLength());
 
     }
-
-
-
-
-
-
     public String getUrl() {
         return url;
     }
@@ -145,5 +185,21 @@ public class UserInput {
 
     public void setEndTimeStamp(long endTimeStamp) {
         this.endTimeStamp = endTimeStamp;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getFrontPart() {
+        return frontPart;
+    }
+
+    public void setFrontPart(String frontPart) {
+        this.frontPart = frontPart;
     }
 }

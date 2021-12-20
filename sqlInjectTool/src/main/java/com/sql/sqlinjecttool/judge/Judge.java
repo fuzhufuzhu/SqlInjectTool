@@ -10,7 +10,7 @@ public class Judge {
 
         long aa=userInput.getEndTimeStamp()-userInput.getStartTimeStamp();
         System.out.println("此时的时间差为"+aa);
-        if (aa>10){
+        if (aa>50){
             return 1;
         }else
             return 0;

@@ -1,6 +1,7 @@
 package com.sql.sqlinjecttool.util;
 
 import com.sql.sqlinjecttool.Test;
+import com.sql.sqlinjecttool.pojo.UserInput;
 import org.springframework.boot.origin.Origin;
 
 import java.io.*;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class Post {
+public class  ResolvingPost implements Cloneable{
     private  HashMap hashMap;
     private String url;
     private String body;
@@ -19,13 +20,14 @@ public class Post {
     public void CollectPost(String path) throws FileNotFoundException, MalformedURLException {
         //读取文件内容
         File file = new File(path);
+        System.out.println("文件路径为"+path);
         BufferedReader reader = null;
         int mark =0;
         try{
             String tempchar;//保存每一行读取的结果
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             HashMap<String,String>hashMap = new HashMap<>();
-            StringBuffer stringBuffer = new StringBuffer();
+           // StringBuffer stringBuffer = new StringBuffer();
             String temp="";
             int line=0;//读取的行数
             while ((tempchar=reader.readLine())!=null){
@@ -42,7 +44,7 @@ public class Post {
                     mark+=1;
                     continue;
                 }
-                if(mark==3){
+                if(mark==1){
                     this.body = tempchar;
                     break;
                 }mark=0;
@@ -50,15 +52,26 @@ public class Post {
                 hashMap.put(header[0],header[1]);
                 }
             this.hashMap=hashMap;
-                    String aa="http://"+hashMap.get("Host")+temp;
+            String aa="http://"+hashMap.get("Host")+temp;
             this.url=aa.replace(" ","");
-            System.out.println(temp);
         } catch (IOException e) {
             e.printStackTrace();
         }
             return ;
 
     }
+    @Override
+    public Object clone(){
+        ResolvingPost resolvingPost = null;
+        try {
+            resolvingPost=(ResolvingPost)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return resolvingPost;}
+
+
+
     public HashMap getHashMap(){
         return hashMap;
     }
@@ -68,10 +81,17 @@ public class Post {
 
     public static void main(String[] args) throws FileNotFoundException, MalformedURLException
     {
-        Post test = new Post();
+        ResolvingPost test = new ResolvingPost();
         test.CollectPost("/home/test/1.txt");
         System.out.println(test.hashMap.get("Host"));
 
 
+    }
+
+    public String getBody() {
+        return body;
+    }
+    public void setBody(String body){
+         this.body=body;
     }
 }
