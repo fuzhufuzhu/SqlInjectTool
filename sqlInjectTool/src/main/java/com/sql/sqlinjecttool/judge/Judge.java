@@ -25,7 +25,13 @@ public class Judge {
             return 1;}else{
             return 0;
     }
-
+    }
+    public int ErrorJudge(UserInput userInput,int button){
+        StringBuffer temp = userInput.getHtml();
+        if(temp.toString().contains(">XPATH syntax error")){
+            System.out.println("存在");
+            return 1;
+        }return 0;
 
     }
 }

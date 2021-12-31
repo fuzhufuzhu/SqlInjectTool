@@ -25,13 +25,15 @@ public class UserInput implements Cloneable{
     private int parmNum;
     private long startTimeStamp;
     private long endTimeStamp;
-    private String type ;
+
     private String frontPart;
+    private String method;
 
     //GET型对象
     public UserInput(String input) throws IOException {
         URL url = new URL(input);
         this.setUrl(input);
+        this.setMethod("GET");
 
         this.frontPart = url.getProtocol()+"://"+url.getHost()+url.getPath()+"?";
         String param=url.getQuery();
@@ -40,7 +42,7 @@ public class UserInput implements Cloneable{
         List<List>paramList =paramOperation.Collect(param);
         this.setParm(paramList);
         this.setParmNum(paramList.size());
-        System.out.println("尝试请求"+ (input));
+        System.out.println("尝试请求"+ URLDecoder.decode(input));
 
         //存储返回包
         this.setStartTimeStamp(System.currentTimeMillis());
@@ -62,7 +64,7 @@ public class UserInput implements Cloneable{
         bufferedReader.close();
         this.setHtml(stringBuffer);
         this.setHtmlLength(connection.getContentLength());
-        this.type = "GET";
+
 
     }
 
@@ -111,7 +113,7 @@ public class UserInput implements Cloneable{
         bufferedReader.close();
         this.setHtml(stringBuffer);
         this.setHtmlLength(connection.getContentLength());
-        this.type="POST";
+        this.method="POST";
     }
     @Override
     public Object clone(){
@@ -201,5 +203,13 @@ public class UserInput implements Cloneable{
 
     public void setFrontPart(String frontPart) {
         this.frontPart = frontPart;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
 }
