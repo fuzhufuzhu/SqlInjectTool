@@ -49,8 +49,18 @@ public class ParamOperation {
         //去除前面的&
         int c =temp.indexOf("&");
         result = temp.substring(0,c)+temp.substring(c+1);
+        System.out.println("尝试payload:"+result);
         return result;
     }
+
+
+    public String markConnect(String value,String payload){
+        String result = value.replace("$$",payload);
+        System.out.println("尝试payload:"+result);
+        return result;
+    }
+
+
 
 
     public ResolvingPost addRequest(String resultPayload, ResolvingPost resolvingPost){

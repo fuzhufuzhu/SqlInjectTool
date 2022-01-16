@@ -16,7 +16,9 @@ public class  ResolvingPost implements Cloneable{
     private  HashMap hashMap;
     private String url;
     private String body;
-    private Boolean status;
+    private Boolean markStatus;
+    private String markValue;
+    private String markKey;
 
     public void CollectPost(String path) throws FileNotFoundException, MalformedURLException {
         //读取文件内容
@@ -53,7 +55,11 @@ public class  ResolvingPost implements Cloneable{
                 if(header[1].contains("$$")){
                     System.out.println("监测的用户标记的记号");
                     System.out.println("键为"+header[0]);
-                    header[1]=header[1].replace("$$","");
+                    //header[1]=header[1].replace("$$","");
+                    setMarkKey(header[0]);
+                    setMarkValue(header[1]);
+                    setMarkStatus(true);
+
                     System.out.println("值为"+header[1]);
                 }
                 hashMap.put(header[0],header[1]);
@@ -82,6 +88,10 @@ public class  ResolvingPost implements Cloneable{
     public HashMap getHashMap(){
         return hashMap;
     }
+    public void setHashMap(String key,String value){
+        this.hashMap.put(key,value);
+
+    }
     public String getUrl(){
         return url;
     }
@@ -101,5 +111,29 @@ public class  ResolvingPost implements Cloneable{
     }
     public void setBody(String body){
          this.body=body;
+    }
+
+    public Boolean getMarkStatus() {
+        return markStatus;
+    }
+
+    public void setMarkStatus(Boolean markStatus) {
+        this.markStatus = markStatus;
+    }
+
+    public String getMarkValue() {
+        return markValue;
+    }
+
+    public void setMarkValue(String markValue) {
+        this.markValue = markValue;
+    }
+
+    public String getMarkKey() {
+        return markKey;
+    }
+
+    public void setMarkKey(String markKey) {
+        this.markKey = markKey;
     }
 }

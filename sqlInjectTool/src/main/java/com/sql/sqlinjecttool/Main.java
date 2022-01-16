@@ -20,6 +20,7 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Scanner;
 
+//C:\Users\Dell\Desktop
 public class Main {
 
         public static void main(String[] args) throws IOException {
@@ -74,25 +75,26 @@ public class Main {
             String testErrorPayload = paramOperation.Connect(1,correctInput,URLEncoder.encode(error));
 
 
-
-
             System.out.println("进行报错注入");
+
             for(int i = 0; i< ErrorPayload.errorPayload.size(); i++){
                 if(button==1){
                     System.out.println("跳过报错注入");
                     break;
                 }
-
                 UserInput errorPayloadInput =null;
-                String errorPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(ErrorPayload.errorPayload.get(i).toString()));
                 if (correctInput.getMethod().equals("POST")){
                     ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
-                    paramOperation.addRequest(errorPayload,resolvingPost1);
-                    errorPayloadInput =  new UserInput(resolvingPost1,method);}
-                else {
-                    String temp = correctInput.getFrontPart();
-                    System.out.println();
-                    errorPayloadInput =new UserInput(temp+errorPayload);
+                    if (resolvingPost.getMarkStatus()){
+                       String markValue =  resolvingPost1.getMarkValue();
+                        String errorPayload = paramOperation.markConnect(markValue,ErrorPayload.errorPayload.get(i).toString());
+                        resolvingPost1.setHashMap(resolvingPost1.getMarkKey(), errorPayload);
+                        errorPayloadInput = new UserInput(resolvingPost1,method);
+                    }
+                    else {
+//                    String temp = correctInput.getFrontPart();
+//                    System.out.println();
+//                    errorPayloadInput =new UserInput(temp+errorPayload);
                 }
                 int mark= judge.ErrorJudge(errorPayloadInput,button);
 
@@ -103,6 +105,33 @@ public class Main {
                     break;
                 }
             }
+
+
+                }
+
+
+
+
+
+//                String errorPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(ErrorPayload.errorPayload.get(i).toString()));
+//                if (correctInput.getMethod().equals("POST")){
+//                    ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
+//                    paramOperation.addRequest(errorPayload,resolvingPost1);
+//                    errorPayloadInput =  new UserInput(resolvingPost1,method);}
+//                else {
+//                    String temp = correctInput.getFrontPart();
+//                    System.out.println();
+//                    errorPayloadInput =new UserInput(temp+errorPayload);
+//                }
+//                int mark= judge.ErrorJudge(errorPayloadInput,button);
+//
+//                if(mark==1){
+//                    System.out.println(mark);
+//                    System.out.println("检测到sql注入，url为"+ URLDecoder.decode(errorPayloadInput.getUrl()));
+//                    button = 1;
+//                    break;
+//                }
+//            }
 
 
             System.out.println("-----进行boolean注入---");
@@ -149,10 +178,13 @@ public class Main {
             if(button!=1){
             System.out.println("布尔盲注未发现结果");
 
+
             System.out.println("开始延时注入");}{
                 System.out.println("开始跑数据");
             }
 
+
+            button=0;
             for(int i =0;i< SleepPayload.sleepPayload.size();i++){
                 if(button==1){
                     System.out.println("跳过延时注入");

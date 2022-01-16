@@ -86,7 +86,7 @@ public class UserInput implements Cloneable{
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
         writer.write(resolvingPost.getBody());
         writer.flush();
-        System.out.println("尝试payload:"+URLDecoder.decode(resolvingPost.getBody()));
+       // System.out.println("尝试payload:"+URLDecoder.decode(resolvingPost.getBody()));
         this.setStartTimeStamp(System.currentTimeMillis());
 
         InputStream inputStream=(InputStream)connection.getContent();
