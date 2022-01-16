@@ -16,6 +16,7 @@ public class  ResolvingPost implements Cloneable{
     private  HashMap hashMap;
     private String url;
     private String body;
+    private Boolean status;
 
     public void CollectPost(String path) throws FileNotFoundException, MalformedURLException {
         //读取文件内容
@@ -49,6 +50,12 @@ public class  ResolvingPost implements Cloneable{
                     break;
                 }mark=0;
                 String[] header =tempchar.split(":",2);
+                if(header[1].contains("$$")){
+                    System.out.println("监测的用户标记的记号");
+                    System.out.println("键为"+header[0]);
+                    header[1]=header[1].replace("$$","");
+                    System.out.println("值为"+header[1]);
+                }
                 hashMap.put(header[0],header[1]);
                 }
             this.hashMap=hashMap;
@@ -82,8 +89,9 @@ public class  ResolvingPost implements Cloneable{
     public static void main(String[] args) throws FileNotFoundException, MalformedURLException
     {
         ResolvingPost test = new ResolvingPost();
-        test.CollectPost("/home/test/1.txt");
-        System.out.println(test.hashMap.get("Host"));
+        test.CollectPost("C:/Users/Test/Desktop/List.txt");
+        //System.out.println(test.hashMap.get("Host"));
+
 
 
     }

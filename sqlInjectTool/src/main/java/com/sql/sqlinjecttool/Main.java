@@ -49,9 +49,7 @@ public class Main {
 
                //构造ReslovingPost对象 对文件中post数据包中的内容进行解析并存储
                correctInput = new UserInput(resolvingPostFirst,method);
-               //System.out.println(path);
                //构建对象的时候发起的请求
-               //现在的目标是能够和联合起来 想一想
                //设置post body 之后
            }else if(in.equals("n")||in.equals("N")){
                method = "GET";
@@ -69,6 +67,13 @@ public class Main {
             Judge judge = new Judge();
 
             System.out.println("--------报错信息探测中------------------");
+            String error = "'<>{}/a1\")(";
+            //paramOperation.Connect(1)
+
+            UserInput testPayloadInput = null;
+            String testErrorPayload = paramOperation.Connect(1,correctInput,URLEncoder.encode(error));
+
+
 
 
             System.out.println("进行报错注入");
@@ -79,8 +84,8 @@ public class Main {
                 }
 
                 UserInput errorPayloadInput =null;
-                String errorPayload = paramOperation.Connect(1,correctInput,URLEncoder.encode(ErrorPayload.errorPayload.get(i).toString()));
-                if (correctInput.getType().equals("POST")){
+                String errorPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(ErrorPayload.errorPayload.get(i).toString()));
+                if (correctInput.getMethod().equals("POST")){
                     ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
                     paramOperation.addRequest(errorPayload,resolvingPost1);
                     errorPayloadInput =  new UserInput(resolvingPost1,method);}
@@ -113,11 +118,11 @@ public class Main {
                     break;}
 
                 //目前拿到了修改后的payload
-                String falesPayload = paramOperation.Connect(1,correctInput,URLEncoder.encode(BooleanPayload.booleanFalesPayload.get(i).toString()));
-                String turePayload = paramOperation.Connect(1,correctInput,URLEncoder.encode(BooleanPayload.booleanTurePayload.get(i).toString()));
+                String falesPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(BooleanPayload.booleanFalesPayload.get(i).toString()));
+                String turePayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(BooleanPayload.booleanTurePayload.get(i).toString()));
 
                 System.out.println(falesPayload);
-                if (correctInput.getType().equals("POST")){
+                if (correctInput.getMethod().equals("POST")){
                  ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
                  ResolvingPost resolvingPost2 = (ResolvingPost) resolvingPost.clone();
 
@@ -128,10 +133,9 @@ public class Main {
                 else
                 {
                     String temp = correctInput.getFrontPart();
-
                     System.out.println();
                     falesPayloadInput =new UserInput(temp+falesPayload);
-                     turePayloadInput = new UserInput(temp+turePayload);
+                    turePayloadInput = new UserInput(temp+turePayload);
                 }
 
                 System.out.println("Ture型Payload返回包大小为"+falesPayloadInput.getHtmlLength());
@@ -155,8 +159,8 @@ public class Main {
                     break;
                 }
                 UserInput sleepPayloadInput =null;
-                String sleepPayload = paramOperation.Connect(1,correctInput,URLEncoder.encode(SleepPayload.sleepPayload.get(i).toString()));
-                if (correctInput.getType().equals("POST")){
+                String sleepPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(SleepPayload.sleepPayload.get(i).toString()));
+                if (correctInput.getMethod().equals("POST")){
                 ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
 
                 paramOperation.addRequest(sleepPayload,resolvingPost1);

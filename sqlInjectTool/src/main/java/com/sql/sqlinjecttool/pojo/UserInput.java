@@ -86,7 +86,7 @@ public class UserInput implements Cloneable{
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
         writer.write(resolvingPost.getBody());
         writer.flush();
-        System.out.println("尝试payload:"+resolvingPost.getBody());
+        System.out.println("尝试payload:"+URLDecoder.decode(resolvingPost.getBody()));
         this.setStartTimeStamp(System.currentTimeMillis());
 
         InputStream inputStream=(InputStream)connection.getContent();
@@ -189,13 +189,6 @@ public class UserInput implements Cloneable{
         this.endTimeStamp = endTimeStamp;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getFrontPart() {
         return frontPart;

@@ -33,6 +33,7 @@ public class ParamOperation {
 
         for(int a=0;a<input.getParm().size();a++) {
 
+
             //在指定位置插入payload
             if (a==i) {
                 temp=temp+"&"+input.getParm().get(a).toString()+payload;
