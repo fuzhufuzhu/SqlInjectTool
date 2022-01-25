@@ -1,6 +1,8 @@
 package com.sql.sqlinjecttool;
 
 import ch.qos.logback.core.joran.util.beans.BeanUtil;
+import com.sql.sqlinjecttool.inject.ErrorInject;
+import com.sql.sqlinjecttool.inject.Inject;
 import com.sql.sqlinjecttool.judge.Judge;
 import com.sql.sqlinjecttool.paramOperation.ParamOperation;
 import com.sql.sqlinjecttool.payload.BooleanPayload;
@@ -28,7 +30,7 @@ public class Main {
             //设置一个按钮，用于开关检测 0代表检测开启 1代表关闭
             int button = 0;
             String input = "";
-            UserInput correctInput =null;
+            UserInput correctInput ;
             String method ;
             ResolvingPost resolvingPostFirst = null;
             ResolvingPost resolvingPost = null;
@@ -52,16 +54,15 @@ public class Main {
                correctInput = new UserInput(resolvingPostFirst,method);
                //构建对象的时候发起的请求
                //设置post body 之后
-           }else if(in.equals("n")||in.equals("N")){
-               method = "GET";
+           }else {
+//               (in.equals("n")||in.equals("N")){
+              method = "GET";
                 System.out.println("输入要注入的url");
                 input = scanner.nextLine();
                 //创建get型正确请求作为之后判断依据
                correctInput = new UserInput(input);
-            }else {
-               System.out.println("非法输入");
-               return;
-           }
+            }
+
             System.out.println("完成正确数据包的请求与保存");
 
             ParamOperation paramOperation = new ParamOperation();
@@ -71,44 +72,40 @@ public class Main {
             String error = "'<>{}/a1\")(";
             //paramOperation.Connect(1)
 
-            UserInput testPayloadInput = null;
-            String testErrorPayload = paramOperation.Connect(1,correctInput,URLEncoder.encode(error));
+
+            ErrorInject errorInject = new ErrorInject(resolvingPost);
+            errorInject.aInject();
 
 
-            System.out.println("进行报错注入");
-
-            for(int i = 0; i< ErrorPayload.errorPayload.size(); i++){
-                if(button==1){
-                    System.out.println("跳过报错注入");
-                    break;
-                }
-                UserInput errorPayloadInput =null;
-                if (correctInput.getMethod().equals("POST")){
-                    ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
-                    if (resolvingPost.getMarkStatus()){
-                       String markValue =  resolvingPost1.getMarkValue();
-                        String errorPayload = paramOperation.markConnect(markValue,ErrorPayload.errorPayload.get(i).toString());
-                        resolvingPost1.setHashMap(resolvingPost1.getMarkKey(), errorPayload);
-                        errorPayloadInput = new UserInput(resolvingPost1,method);
-                    }
-                    else {
-//                    String temp = correctInput.getFrontPart();
-//                    System.out.println();
-//                    errorPayloadInput =new UserInput(temp+errorPayload);
-                }
-                int mark= judge.ErrorJudge(errorPayloadInput,button);
-
-                if(mark==1){
-                    System.out.println(mark);
-                    System.out.println("检测到sql注入，url为"+ URLDecoder.decode(errorPayloadInput.getUrl()));
-                    button = 1;
-                    break;
-                }
-            }
-
-
-                }
-
+//            UserInput testPayloadInput = null;
+//            String testErrorPayload = paramOperation.Connect(1,correctInput,URLEncoder.encode(error));
+//            System.out.println("进行报错注入");
+//            for(int i = 0; i< ErrorPayload.errorPayload.size(); i++){
+//                UserInput errorPayloadInput =null;
+//                if (correctInput.getMethod().equals("POST")){
+//                    ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
+//                    if (resolvingPost.getMarkStatus()){
+//                       String markValue =  resolvingPost1.getMarkValue();
+//                       String errorPayload = paramOperation.markConnect(markValue,ErrorPayload.errorPayload.get(i).toString());
+//                       resolvingPost1.setHashMap(resolvingPost1.getMarkKey(), errorPayload);
+//                       errorPayloadInput = new UserInput(resolvingPost1,method);
+//                    }
+//                    else {
+////                    String temp = correctInput.getFrontPart();
+////                    System.out.println();
+////                    errorPayloadInput =new UserInput(temp+errorPayload);
+//                }
+//                int mark= judge.ErrorJudge(errorPayloadInput,button);
+//
+//                if(mark==1){
+//                    System.out.println(mark);
+//                    System.out.println("检测到sql注入，url为"+ URLDecoder.decode(errorPayloadInput.getUrl()));
+//                    button = 1;
+//                    break;
+//                }
+//            }
+//                }
+//
 
 
 

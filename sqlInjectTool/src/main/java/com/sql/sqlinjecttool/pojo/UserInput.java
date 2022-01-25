@@ -64,8 +64,6 @@ public class UserInput implements Cloneable{
         bufferedReader.close();
         this.setHtml(stringBuffer);
         this.setHtmlLength(connection.getContentLength());
-
-
     }
 
         //在该出设置一个读取好的数据包 post型的构造方法就是读取已经解析过的数据包
@@ -83,13 +81,13 @@ public class UserInput implements Cloneable{
             connection.setRequestProperty((String) key,(String) value);
         }
         connection.connect();
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(),"UTF-8"));
         writer.write(resolvingPost.getBody());
         writer.flush();
        // System.out.println("尝试payload:"+URLDecoder.decode(resolvingPost.getBody()));
         this.setStartTimeStamp(System.currentTimeMillis());
 
-        InputStream inputStream=(InputStream)connection.getContent();
+        InputStream inputStream=connection.getInputStream();
         this.setEndTimeStamp(System.currentTimeMillis());
 
         //获取body中的数组
@@ -98,12 +96,15 @@ public class UserInput implements Cloneable{
         this.setParm(paramList);
         this.setParmNum(paramList.size());
 
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream,"utf-8");
         StringBuffer stringBuffer =new StringBuffer();
+
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        System.out.println("buffer"+bufferedReader.readLine());
         String temp = null;
+        StringBuilder test = null;
         while ((temp=bufferedReader.readLine())!=null){
-            stringBuffer.append(temp);
+            test.append(temp);
         }
         inputStream.close();
         inputStreamReader.close();
@@ -112,6 +113,7 @@ public class UserInput implements Cloneable{
 
         bufferedReader.close();
         this.setHtml(stringBuffer);
+        System.out.println("页面内容为"+this.html.toString());
         this.setHtmlLength(connection.getContentLength());
         this.method="POST";
     }
