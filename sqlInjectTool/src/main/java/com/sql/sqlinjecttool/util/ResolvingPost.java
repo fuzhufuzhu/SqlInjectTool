@@ -46,6 +46,7 @@ public class  ResolvingPost implements Cloneable{
                 if(tempchar.equals("")){
                     mark+=1;
                     continue;
+
                 }
                 if(mark==1){
                     this.body = tempchar;
@@ -62,6 +63,7 @@ public class  ResolvingPost implements Cloneable{
 
                     System.out.println("值为"+header[1]);
                 }
+                setMarkStatus(false);
                 hashMap.put(header[0],header[1]);
                 }
             this.hashMap=hashMap;

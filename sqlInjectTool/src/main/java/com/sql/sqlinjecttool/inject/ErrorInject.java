@@ -19,7 +19,6 @@ public class ErrorInject extends Inject {
     }
     public ErrorInject(ResolvingPost resolvingPost){
         super(resolvingPost);
-        System.out.println("POST");
     }
 
     public String aInject() throws IOException {
@@ -35,8 +34,8 @@ public class ErrorInject extends Inject {
             UserInput errorPayloadInput =null;
             if (1==1){
                 ResolvingPost resolvingPost1 = (ResolvingPost) getResolvingPost().clone();
-                //if (isMarkStatus()){
-                if (1 == 1) {
+                if (isMarkStatus()){
+
 
                     String markValue = resolvingPost1.getMarkValue();
 
@@ -49,7 +48,7 @@ public class ErrorInject extends Inject {
 //                    System.out.println();
 //                    errorPayloadInput =new UserInput(temp+errorPayload);
                 }
-                int mark= judge.ErrorJudge(errorPayloadInput);
+                int mark= judge.ErrorJudge(errorPayloadInput,1);
 
                 if(mark==1){
                     System.out.println(mark);

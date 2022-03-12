@@ -26,7 +26,10 @@ public class Judge {
             return 0;
     }
     }
-    public int ErrorJudge(UserInput userInput){
+    public int ErrorJudge(UserInput userInput,int button){
+        if (button==1){
+            return 1;
+        }
         StringBuffer temp = userInput.getHtml();
         System.out.println(temp.toString());
         if(temp.toString().contains("XPATH syntax error")){

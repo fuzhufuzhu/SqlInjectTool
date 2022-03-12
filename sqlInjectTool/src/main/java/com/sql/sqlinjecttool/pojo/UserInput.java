@@ -102,9 +102,8 @@ public class UserInput implements Cloneable{
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         System.out.println("buffer"+bufferedReader.readLine());
         String temp = null;
-        StringBuilder test = null;
         while ((temp=bufferedReader.readLine())!=null){
-            test.append(temp);
+            stringBuffer.append(temp);
         }
         inputStream.close();
         inputStreamReader.close();
