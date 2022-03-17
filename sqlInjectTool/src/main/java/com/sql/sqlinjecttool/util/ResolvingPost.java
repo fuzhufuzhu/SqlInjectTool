@@ -2,7 +2,7 @@ package com.sql.sqlinjecttool.util;
 
 import com.sql.sqlinjecttool.Test;
 import com.sql.sqlinjecttool.pojo.UserInput;
-import org.springframework.boot.origin.Origin;
+
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -30,9 +30,10 @@ public class  ResolvingPost implements Cloneable{
             String tempchar;//保存每一行读取的结果
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             HashMap<String,String>hashMap = new HashMap<>();
-           // StringBuffer stringBuffer = new StringBuffer();
+            // StringBuffer stringBuffer = new StringBuffer();
             String temp="";
             int line=0;//读取的行数
+            setMarkStatus(false);
             while ((tempchar=reader.readLine())!=null){
                 //因为第一行格式特殊 需要特殊处理
                 if(line==0){
@@ -60,19 +61,19 @@ public class  ResolvingPost implements Cloneable{
                     setMarkKey(header[0]);
                     setMarkValue(header[1]);
                     setMarkStatus(true);
-
                     System.out.println("值为"+header[1]);
                 }
-                setMarkStatus(false);
-                hashMap.put(header[0],header[1]);
-                }
+                else{
+                    hashMap.put(header[0],header[1]);}
+
+            }
             this.hashMap=hashMap;
             String aa="http://"+hashMap.get("Host")+temp;
             this.url=aa.replace(" ","");
         } catch (IOException e) {
             e.printStackTrace();
         }
-            return ;
+        return ;
 
     }
     @Override
@@ -112,7 +113,7 @@ public class  ResolvingPost implements Cloneable{
         return body;
     }
     public void setBody(String body){
-         this.body=body;
+        this.body=body;
     }
 
     public Boolean getMarkStatus() {
