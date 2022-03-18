@@ -112,8 +112,10 @@ public class UserInput implements Cloneable{
 
         bufferedReader.close();
         this.setHtml(stringBuffer);
-        System.out.println("页面内容为"+this.html.toString());
+       // System.out.println("页面内容为"+this.html.toString());
+
         this.setHtmlLength(connection.getContentLength());
+        System.out.println(getHtmlLength());
         this.method="POST";
     }
     @Override

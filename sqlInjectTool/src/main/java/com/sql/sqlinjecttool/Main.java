@@ -70,17 +70,11 @@ public class Main {
         ParamOperation paramOperation = new ParamOperation();
         Judge judge = new Judge();
 
-
         //首先探测有无报错信息
         String error = "'<>{}/a1\")(";
 
 
-        //   ErrorInject errorInject = new ErrorInject(resolvingPost);
-        // errorInject.aInject();
-
-
-
-        String testErrorPayload = paramOperation.Connect(1,correctInput,URLEncoder.encode(error));
+        String testErrorPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(error));
         System.out.println("报错信息探测中------------");
 
         UserInput testPayloadInput = null;
@@ -93,10 +87,15 @@ public class Main {
                 testPayloadInput = new UserInput(resolvingPost1,method);
             }
             else {
-                String temp = correctInput.getFrontPart();
-                System.out.println();
-                testPayloadInput =new UserInput(temp+errorPayload);
-            }}
+                paramOperation.addRequest(testErrorPayload,resolvingPost1);
+                testPayloadInput =  new UserInput(resolvingPost1,method);
+            }
+        }else {
+             String temp = correctInput.getFrontPart();
+             testPayloadInput =new UserInput(temp+testErrorPayload);
+        }
+
+
         int mark1=judge.ErrorJudge(testPayloadInput,0);
 
         if(mark1==1){
@@ -121,9 +120,18 @@ public class Main {
                     errorPayloadInput = new UserInput(resolvingPost1,method);
                 }
                 else {
-                    String temp = correctInput.getFrontPart();
-                    System.out.println();
-                    errorPayloadInput =new UserInput(temp+errorPayload);
+                    paramOperation.addRequest(testErrorPayload,resolvingPost1);
+                    errorPayloadInput =  new UserInput(resolvingPost1,method);
+
+//                    String temp = correctInput.getFrontPart();
+//                    System.out.println();
+//                    errorPayloadInput =new UserInput(temp+errorPayload);
+                }}
+                else {
+//                    String errorPayload = paramOperation.markConnect(0,)
+//                    String temp = correctInput.getFrontPart();
+//                    errorPayload
+//                    errorPayloadInput =new UserInput(temp+errorPayload.get(i));
                 }
                 int mark= judge.ErrorJudge(errorPayloadInput,button);
 
@@ -134,7 +142,7 @@ public class Main {
                     break;
                 }
             }
-        }
+
 
 
 
@@ -177,7 +185,7 @@ public class Main {
             String turePayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(BooleanPayload.booleanTurePayload.get(i).toString()));
 
             System.out.println(falesPayload);
-            if (correctInput.getMethod().equals("POST")){
+             if (correctInput.getMethod().equals("POST")){
                 ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
                 ResolvingPost resolvingPost2 = (ResolvingPost) resolvingPost.clone();
 

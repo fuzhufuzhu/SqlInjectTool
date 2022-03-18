@@ -1,7 +1,9 @@
 package com.sql.sqlinjecttool.paramOperation;
 
 import com.sql.sqlinjecttool.pojo.UserInput;
+import com.sql.sqlinjecttool.util.Base64;
 import com.sql.sqlinjecttool.util.ResolvingPost;
+import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import java.net.URLDecoder;
@@ -49,14 +51,14 @@ public class ParamOperation {
         //去除前面的&
         int c =temp.indexOf("&");
         result = temp.substring(0,c)+temp.substring(c+1);
-        System.out.println("尝试payload:"+result);
+        System.out.println("尝试payload:"+ URLDecoder.decode(result));
         return result;
     }
 
 
     public String markConnect(String value,String payload){
         String result = value.replace("$$",payload);
-        System.out.println("尝试payload:"+result);
+        System.out.println("尝试payload:"+URLDecoder.decode(result));
         return result;
     }
 
