@@ -51,7 +51,8 @@ public class ParamOperation {
         //去除前面的&
         int c =temp.indexOf("&");
         result = temp.substring(0,c)+temp.substring(c+1);
-        System.out.println("尝试payload:"+ URLDecoder.decode(result));
+        System.out.println("开始拼接payload-----------");
+      //  System.out.println("尝试payload:"+ URLDecoder.decode(result));
         return result;
     }
 

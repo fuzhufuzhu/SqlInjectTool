@@ -111,11 +111,14 @@ public class Main {
         System.out.println("进行报错注入");
         for(int i = 0; i< errorPayload.size(); i++){
             UserInput errorPayloadInput =null;
+            String errorPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(ErrorPayload.errorPayload.get(i).toString()));
+
             if (correctInput.getMethod().equals("POST")){
                 ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
+
                 if (resolvingPost.getMarkStatus()){
                     String markValue =  resolvingPost1.getMarkValue();
-                    String errorPayload = paramOperation.markConnect(markValue, ErrorPayload.errorPayload.get(i).toString());
+                     errorPayload = paramOperation.markConnect(markValue, ErrorPayload.errorPayload.get(i).toString());
                     resolvingPost1.setHashMap(resolvingPost1.getMarkKey(), errorPayload);
                     errorPayloadInput = new UserInput(resolvingPost1,method);
                 }
@@ -128,10 +131,9 @@ public class Main {
 //                    errorPayloadInput =new UserInput(temp+errorPayload);
                 }}
                 else {
-//                    String errorPayload = paramOperation.markConnect(0,)
-//                    String temp = correctInput.getFrontPart();
-//                    errorPayload
-//                    errorPayloadInput =new UserInput(temp+errorPayload.get(i));
+
+                    String temp = correctInput.getFrontPart();
+                    errorPayloadInput =new UserInput(temp+errorPayload);
                 }
                 int mark= judge.ErrorJudge(errorPayloadInput,button);
 
