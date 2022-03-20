@@ -69,10 +69,11 @@ public class UserInput implements Cloneable{
         //在该出设置一个读取好的数据包 post型的构造方法就是读取已经解析过的数据包
         //
     //post型对象
-    public UserInput (ResolvingPost resolvingPost,String method) throws IOException {
+    public UserInput (ResolvingPost resolvingPost) throws IOException {
 
        HashMap postHashMap=resolvingPost.getHashMap();
         HttpURLConnection connection = HttpSend.sendHttpRequest(resolvingPost.getUrl(),"POST");
+        this.setUrl(resolvingPost.getUrl());
         connection.setDoOutput(true);
         Iterator iterator = postHashMap.keySet().iterator();
         while (iterator.hasNext()){

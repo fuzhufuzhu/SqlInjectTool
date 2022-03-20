@@ -19,12 +19,17 @@ public class Inject {
     }
 
     public Inject(ResolvingPost resolvingPost){
+
        setResolvingPost(resolvingPost);
     }
 
 
-
-
+    public void aInject(UserInput correctInput,Inject inject){
+        if(inject.buttonStatus){
+            System.out.println("开关关闭");
+            return ;
+        }
+    }
 
     public UserInput getUserInput(){
      return userInput;

