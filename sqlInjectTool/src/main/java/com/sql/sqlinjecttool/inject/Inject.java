@@ -25,10 +25,12 @@ public class Inject {
 
 
     public void aInject(UserInput correctInput,Inject inject){
+
         if(inject.buttonStatus){
             System.out.println("开关关闭");
             return ;
         }
+
     }
 
     public UserInput getUserInput(){

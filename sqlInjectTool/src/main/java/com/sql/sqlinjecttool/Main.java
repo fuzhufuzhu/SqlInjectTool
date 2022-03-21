@@ -3,6 +3,7 @@ package com.sql.sqlinjecttool;
 
 import com.sql.sqlinjecttool.inject.ErrorInject;
 import com.sql.sqlinjecttool.inject.Inject;
+import com.sql.sqlinjecttool.inject.UnionInject;
 import com.sql.sqlinjecttool.judge.Judge;
 import com.sql.sqlinjecttool.paramOperation.ParamOperation;
 import com.sql.sqlinjecttool.payload.BooleanPayload;
@@ -70,6 +71,13 @@ public class Main {
         ParamOperation paramOperation = new ParamOperation();
         Judge judge = new Judge();
 
+        //练习
+        UnionInject unionInject = new UnionInject(correctInput);
+        ResolvingPost resolvingPost3 = (ResolvingPost) resolvingPost.clone();
+        unionInject.aInject(resolvingPost3,correctInput);
+
+
+
         //首先探测有无报错信息
         String error = "'<>{}/a1\")(";
 
@@ -119,6 +127,7 @@ public class Main {
 
 
         //
+
 
 
 
