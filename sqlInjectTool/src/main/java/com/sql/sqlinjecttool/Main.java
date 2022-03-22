@@ -71,10 +71,20 @@ public class Main {
         ParamOperation paramOperation = new ParamOperation();
         Judge judge = new Judge();
 
-        //练习
+
+        /*
+        union get请求
+         */
         UnionInject unionInject = new UnionInject(correctInput);
-        ResolvingPost resolvingPost3 = (ResolvingPost) resolvingPost.clone();
-        unionInject.aInject(resolvingPost3,correctInput);
+        unionInject.GetaInject(correctInput);
+
+       /*
+       union post请求
+        */
+//        UnionInject unionInject = new UnionInject(correctInput);
+//        ResolvingPost resolvingPost3 = (ResolvingPost) resolvingPost.clone();
+//        unionInject.PostaInject(resolvingPost3,correctInput);
+
 
 
 
@@ -82,6 +92,7 @@ public class Main {
         String error = "'<>{}/a1\")(";
 
         String testErrorPayload = paramOperation.Connect(0,correctInput,URLEncoder.encode(error));
+
         System.out.println("报错信息探测中------------");
 
         UserInput testPayloadInput = null;

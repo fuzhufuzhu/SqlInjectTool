@@ -2,6 +2,9 @@ package com.sql.sqlinjecttool.judge;
 
 import com.sql.sqlinjecttool.pojo.UserInput;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class Judge {
     public int SleepJudge(UserInput userInput,int button){
         System.out.println("button的值为"+button);
@@ -37,5 +40,22 @@ public class Judge {
         }return 0;
 
     }
+    public int UnionJudge(UserInput userInput, ArrayList list){
+        StringBuffer temp = userInput.getHtml();
+
+        Iterator iterator = list.iterator();
+        while (iterator.hasNext()){
+            if (temp.toString().contains(iterator.next().toString())){
+                System.out.println("检测到了联合注入输出点为"+iterator.next().toString());
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+
+
+
+
 }
 
