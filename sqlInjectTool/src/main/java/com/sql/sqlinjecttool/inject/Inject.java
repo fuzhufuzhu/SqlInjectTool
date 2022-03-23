@@ -4,7 +4,7 @@ import com.sql.sqlinjecttool.pojo.UserInput;
 import com.sql.sqlinjecttool.util.ResolvingPost;
 
 public class Inject {
-    private boolean buttonStatus;
+    private boolean checkStatus;
     private boolean markStatus;
     private UserInput userInput;
     private String method;
@@ -24,22 +24,15 @@ public class Inject {
     }
 
 
-    public void aInject(UserInput correctInput,Inject inject){
-
-        if(inject.buttonStatus){
-            System.out.println("开关关闭");
-            return ;
-        }
-
-    }
 
     public UserInput getUserInput(){
      return userInput;
     }
 
-    public boolean isButtonStatus(){
-        return buttonStatus;
+    public boolean getCheckStatus(){
+        return  checkStatus;
     }
+
 
     public boolean isMarkStatus() {
         return markStatus;

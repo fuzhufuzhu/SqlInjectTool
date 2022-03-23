@@ -29,12 +29,22 @@ public class Judge {
             return 0;
     }
     }
+    public int BasicErrorJudge(UserInput userInput){
+//        if (button==1){
+//            return 1;
+//        }
+        StringBuffer temp = userInput.getHtml();
+        if(temp.toString().contains("You have an error in your SQL syntax")){
+            return 1;
+        }return 0;
+
+    }
+
     public int ErrorJudge(UserInput userInput){
 //        if (button==1){
 //            return 1;
 //        }
         StringBuffer temp = userInput.getHtml();
-        System.out.println(temp.toString());
         if(temp.toString().contains("XPATH syntax error")){
             return 1;
         }return 0;

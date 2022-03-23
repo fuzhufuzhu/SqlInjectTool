@@ -58,7 +58,6 @@ public class Main {
             //构建对象的时候发起的请求
             //设置post body 之后
         }else {
-//               (in.equals("n")||in.equals("N")){
             method = "GET";
             System.out.println("输入要注入的url");
             input = scanner.nextLine();
@@ -73,18 +72,29 @@ public class Main {
 
 
         /*
-        union get请求
+        联合注入检查
          */
-        UnionInject unionInject = new UnionInject(correctInput);
-        unionInject.GetaInject(correctInput);
+        if(correctInput.getMethod().equals("GET")) {
+            UnionInject unionInject = new UnionInject(correctInput);
+            //开关
+            if(unionInject.getCheckStatus()){
+             return;
+            }
+            unionInject.GetaInject(correctInput);
+        }else{
+            UnionInject unionInject = new UnionInject(correctInput);
+            //开关
+            if(unionInject.getCheckStatus()){
+                return;
+            }
+            ResolvingPost resolvingPostOfUnion = (ResolvingPost) resolvingPost.clone();
+            unionInject.PostaInject(resolvingPostOfUnion, correctInput);
+        }
 
-       /*
-       union post请求
-        */
-//        UnionInject unionInject = new UnionInject(correctInput);
-//        ResolvingPost resolvingPost3 = (ResolvingPost) resolvingPost.clone();
-//        unionInject.PostaInject(resolvingPost3,correctInput);
 
+        /*
+        报错注入
+         */
 
 
 
@@ -114,7 +124,7 @@ public class Main {
         }
 
 
-        int mark1=judge.ErrorJudge(testPayloadInput);
+        int mark1=judge.BasicErrorJudge(testPayloadInput);
 
         if(mark1==1){
             System.out.println(mark1);
@@ -135,15 +145,6 @@ public class Main {
 //            if(inject.isButtonStatus()){
 //            inject.aInject(resolvingPost,correctInput);}
 //        }
-
-
-        //
-
-
-
-
-
-
 
 
         //练习模块

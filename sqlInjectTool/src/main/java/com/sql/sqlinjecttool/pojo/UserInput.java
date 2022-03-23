@@ -25,6 +25,7 @@ public class UserInput implements Cloneable{
     private int parmNum;
     private long startTimeStamp;
     private long endTimeStamp;
+    private boolean checkStatus;
 
     private String frontPart;
     private String method;
@@ -34,6 +35,7 @@ public class UserInput implements Cloneable{
         URL url = new URL(input);
         this.setUrl(input);
         this.setMethod("GET");
+
 
         this.frontPart = url.getProtocol()+"://"+url.getHost()+url.getPath()+"?";
         String param=url.getQuery();
@@ -74,6 +76,7 @@ public class UserInput implements Cloneable{
        HashMap postHashMap=resolvingPost.getHashMap();
         HttpURLConnection connection = HttpSend.sendHttpRequest(resolvingPost.getUrl(),"POST");
         this.setUrl(resolvingPost.getUrl());
+        System.out.println("尝试请求"+ URLDecoder.decode(resolvingPost.getBody()));
         connection.setDoOutput(true);
         Iterator iterator = postHashMap.keySet().iterator();
         while (iterator.hasNext()){
@@ -116,7 +119,6 @@ public class UserInput implements Cloneable{
        // System.out.println("页面内容为"+this.html.toString());
 
         this.setHtmlLength(connection.getContentLength());
-        System.out.println(getHtmlLength());
         this.method="POST";
     }
     @Override
@@ -208,5 +210,13 @@ public class UserInput implements Cloneable{
 
     public void setMethod(String method) {
         this.method = method;
+    }
+
+    public boolean isCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(boolean checkStatus) {
+        this.checkStatus = checkStatus;
     }
 }
